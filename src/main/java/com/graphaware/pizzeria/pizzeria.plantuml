@@ -1,0 +1,253 @@
+@startuml
+
+title __PIZZERIA's Class Diagram__\n
+
+namespace com.graphaware.pizzeria {
+  class com.graphaware.pizzeria.PizzeriaApplication {
+      {static} + main()
+  }
+}
+
+namespace com.graphaware.pizzeria {
+
+  namespace security {
+    class com.graphaware.pizzeria.security.MethodSecurityConfiguration {
+                            # createExpressionHandler()
+                            - getRoleHierarchy()
+     }
+
+    class com.graphaware.pizzeria.security.PasswordEncoder {
+        + encoder()
+    }
+
+    class com.graphaware.pizzeria.security.PizzeriaSecurityConfiguration {
+        - encoder : BCryptPasswordEncoder
+        + PizzeriaSecurityConfiguration()
+        + configure()
+        # configure()
+    }
+
+    class com.graphaware.pizzeria.security.PizzeriaUserDetailsService {
+        + loadUserByUsername()
+    }
+
+    class com.graphaware.pizzeria.security.PizzeriaUserPrincipal {
+        + PizzeriaUserPrincipal()
+        + getAuthorities()
+        + getPassword()
+        + getUser()
+        + getUsername()
+        + isAccountNonExpired()
+        + isAccountNonLocked()
+        + isCredentialsNonExpired()
+        + isEnabled()
+    }
+  }
+
+  namespace service {
+    class com.graphaware.pizzeria.service.EmailService {
+        - props : Properties
+        + EmailService()
+        + send()
+        + sendConfirmationEmail()
+    }
+
+    class com.graphaware.pizzeria.service.ManagementService {
+        + ManagementService()
+        + getPurchasesCount()
+        - getCurrentUser()
+    }
+
+    class com.graphaware.pizzeria.service.PizzeriaException {
+    }
+
+    class com.graphaware.pizzeria.service.PurchaseService {
+        - ongoingPurchases : Map<PizzeriaUser, Purchase>
+        + PurchaseService()
+        + addPizzaToPurchase()
+        + completePurchase()
+        + confirmPurchase()
+        + getCurrentPurchase()
+        + pickPurchase()
+        - computeAmount()
+        - getCurrentUser()
+    }
+
+
+  }
+
+  namespace repository {
+
+      interface com.graphaware.pizzeria.repository.PizzaRepository {
+      }
+
+      interface com.graphaware.pizzeria.repository.PizzeriaUserRepository {
+                {abstract} + findByUsername()
+      }
+
+      interface com.graphaware.pizzeria.repository.PurchaseRepository {
+          {abstract} + findAllByStateEqualsAndCustomer_Id()
+          {abstract} + findFirstByStateEquals()
+      }
+
+      interface com.graphaware.pizzeria.repository.PizzaRepositoryCustom {
+                  {abstract} + getPizzaContainingTopping()
+      }
+
+      class com.graphaware.pizzeria.repository.PizzaRepositoryImpl {
+                  - entityManager : EntityManager
+                  + getPizzaContainingTopping()
+      }
+  }
+
+  namespace model {
+
+        class Pizza {
+            - id : long
+            - name : String
+            - price : Double
+            - toppings : List<String>
+            + Pizza()
+            + equals()
+            + getId()
+            + getName()
+            + getPrice()
+            + getToppings()
+            + hashCode()
+            + setId()
+            + setName()
+            + setPrice()
+            + setToppings()
+            + toString()
+            # canEqual()
+        }
+
+        class PizzeriaUser {
+            - email : String
+            - id : long
+            - name : String
+            - password : String
+            - roles : List<UserRole>
+            - username : String
+            + PizzeriaUser()
+            + equals()
+            + getEmail()
+            + getId()
+            + getName()
+            + getPassword()
+            + getRoles()
+            + getUsername()
+            + hashCode()
+            + setEmail()
+            + setId()
+            + setName()
+            + setPassword()
+            + setRoles()
+            + setUsername()
+            + toString()
+            # canEqual()
+        }
+
+        class Purchase {
+            + id : long
+            - amount : Double
+            - checkoutDate : Date
+            - creationDate : Date
+            - pizzas : List<Pizza>
+            + Purchase()
+            + equals()
+            + getAmount()
+            + getCheckoutDate()
+            + getCreationDate()
+            + getCustomer()
+            + getId()
+            + getPizzas()
+            + getState()
+            + getWorker()
+            + hashCode()
+            + setAmount()
+            + setCheckoutDate()
+            + setCreationDate()
+            + setCustomer()
+            + setId()
+            + setPizzas()
+            + setState()
+            + setWorker()
+            + toString()
+            # canEqual()
+        }
+
+      enum PurchaseState {
+                DRAFT
+                ONGOING
+                PLACED
+                SERVED
+      }
+
+      class RoleConverter {
+                  - OBJECT_MAPPER : ObjectMapper
+                  + convertToDatabaseColumn()
+                  + convertToEntityAttribute()
+      }
+
+      class ToppingConverter {
+                        - OBJECT_MAPPER : ObjectMapper
+                        + convertToDatabaseColumn()
+                        + convertToEntityAttribute()
+      }
+
+      enum UserRole {
+        CUSTOMER
+        OWNER
+        PIZZA_MAKER
+      }
+  }
+
+  namespace controller {
+
+      class com.graphaware.pizzeria.controller.ManagementController {
+                        + ManagementController()
+                        + getPurchasesCount()
+                    }
+
+      class com.graphaware.pizzeria.controller.PizzaController {
+          + createPizza()
+          + getPizzas()
+      }
+
+      class com.graphaware.pizzeria.controller.PurchaseController {
+          + PurchaseController()
+          + addToBasked()
+          + completePurchase()
+          + getCurrentPurchase()
+          + pickPurchase()
+          + submitPurchase()
+      }
+  }
+
+}
+
+
+com.graphaware.pizzeria.controller.ManagementController o-- com.graphaware.pizzeria.service.ManagementService : managementService
+com.graphaware.pizzeria.controller.PizzaController o-- com.graphaware.pizzeria.repository.PizzaRepository : repo
+com.graphaware.pizzeria.controller.PurchaseController o-- com.graphaware.pizzeria.service.PurchaseService : purchaseService
+com.graphaware.pizzeria.model.Purchase o-- com.graphaware.pizzeria.model.PizzeriaUser : customer
+com.graphaware.pizzeria.model.Purchase o-- com.graphaware.pizzeria.model.PurchaseState : state
+com.graphaware.pizzeria.model.Purchase o-- com.graphaware.pizzeria.model.PizzeriaUser : worker
+com.graphaware.pizzeria.model.RoleConverter .up.|> javax.persistence.AttributeConverter
+com.graphaware.pizzeria.model.ToppingConverter .up.|> javax.persistence.AttributeConverter
+com.graphaware.pizzeria.repository.PizzaRepositoryImpl .up.|> com.graphaware.pizzeria.repository.PizzaRepositoryCustom
+com.graphaware.pizzeria.service.ManagementService o-- com.graphaware.pizzeria.repository.PizzeriaUserRepository : pizzeriaUserRepository
+com.graphaware.pizzeria.service.ManagementService o-- com.graphaware.pizzeria.repository.PurchaseRepository : purchaseRepository
+com.graphaware.pizzeria.service.PurchaseService o-- com.graphaware.pizzeria.repository.PizzeriaUserRepository : pizzeriaUserRepository
+com.graphaware.pizzeria.service.PurchaseService o-- com.graphaware.pizzeria.repository.PurchaseRepository : purchaseRepository
+com.graphaware.pizzeria.security.MethodSecurityConfiguration -up-|> org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration
+com.graphaware.pizzeria.security.PizzeriaSecurityConfiguration -up-|> org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+com.graphaware.pizzeria.security.PizzeriaSecurityConfiguration o-- com.graphaware.pizzeria.security.PizzeriaUserDetailsService : userDetailsService
+com.graphaware.pizzeria.security.PizzeriaUserDetailsService .up.|> org.springframework.security.core.userdetails.UserDetailsService
+com.graphaware.pizzeria.security.PizzeriaUserDetailsService o-- com.graphaware.pizzeria.repository.PizzeriaUserRepository : userRepository
+com.graphaware.pizzeria.security.PizzeriaUserPrincipal .up.|> org.springframework.security.core.userdetails.UserDetails
+com.graphaware.pizzeria.security.PizzeriaUserPrincipal o-- com.graphaware.pizzeria.model.PizzeriaUser : user
+
+
+@enduml
