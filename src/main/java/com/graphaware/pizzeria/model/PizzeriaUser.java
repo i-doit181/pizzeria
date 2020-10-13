@@ -13,26 +13,25 @@ import java.util.List;
 @Getter
 @Setter
 public class PizzeriaUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
-    @NotNull
-    private String username;
+	@NotNull
+	private String username;
 
-    @NotNull
-    private String password;
+	@NotNull
+	private String password;
 
-    @NotNull
-    private String email;
+	@NotNull
+	private String email;
 
-    @NotNull
-    @Convert(converter = RoleConverter.class)
-    @Column(length = 10485760)
-    private List<UserRole> roles;
+	@NotNull
+	@Convert(converter = RoleConverter.class)
+	@Column(length = 10485760)
+	private List<UserRole> roles;
 
 }
-

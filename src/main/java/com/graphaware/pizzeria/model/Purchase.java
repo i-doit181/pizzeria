@@ -15,38 +15,32 @@ import java.util.List;
 @Setter
 public class Purchase {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn()
-    private PizzeriaUser worker;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn()
+	private PizzeriaUser worker;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn()
-    private PizzeriaUser customer;
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn()
+	private PizzeriaUser customer;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PurchaseState state;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private PurchaseState state;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "purchase_pizza",
-            joinColumns = @JoinColumn(name = "purchase_id"),
-            inverseJoinColumns = @JoinColumn(name = "pizza_id")
-    )
-    private List<Pizza> pizzas;
+	@ManyToMany
+	@JoinTable(name = "purchase_pizza", joinColumns = @JoinColumn(name = "purchase_id"), inverseJoinColumns = @JoinColumn(name = "pizza_id"))
+	private List<Pizza> pizzas;
 
-    @NotNull
-    private Date creationDate;
+	@NotNull
+	private Date creationDate;
 
-    private Date checkoutDate;
+	private Date checkoutDate;
 
-    private Double amount;
+	private Double amount;
 }

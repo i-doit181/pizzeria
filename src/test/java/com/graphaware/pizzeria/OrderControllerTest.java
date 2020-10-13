@@ -1,4 +1,3 @@
 package com.graphaware.pizzeria;
 
-public class OrderControllerTest {
-}
+public class OrderControllerTest {}

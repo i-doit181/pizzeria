@@ -41,7 +41,7 @@ public class PurchaseController {
 	@GetMapping("pickPurchase")
 	public ResponseEntity<Purchase> pickPurchase() {
 		Purchase purchase = purchaseService.pickPurchase();
-		return new ResponseEntity<>(purchase, HttpStatus.OK);
+		return new ResponseEntity<>(purchase, purchase != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 
 	@PutMapping("completePurchase/{id}")

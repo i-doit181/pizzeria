@@ -17,13 +17,15 @@ public class PizzaController {
 	PizzaRepository repo;
 
 	@PostMapping("/pizza")
-	public void createPizza(@RequestBody Pizza pizza){
-		repo.save(pizza);
+	public void createPizza(@RequestBody Pizza pizza) {
+		if (!repo.existsPizzaByName(pizza.getName())) {
+			repo.save(pizza);
+		}
 	}
 
 	@GetMapping("/pizza")
-	public Iterable<Pizza> getPizzas(@RequestParam(value = "topping", required = false) String topping){
-		if (topping==null)
+	public Iterable<Pizza> getPizzas(@RequestParam(value = "topping", required = false) String topping) {
+		if (topping == null)
 			return repo.findAll();
 		else
 			return repo.getPizzaContainingTopping(topping);

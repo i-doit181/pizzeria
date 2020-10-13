@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class PizzeriaUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private PizzeriaUserRepository userRepository;
+	@Autowired
+	private PizzeriaUserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        PizzeriaUser user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new PizzeriaUserPrincipal(user);
-    }
+	@Override
+	public UserDetails loadUserByUsername(String username) {
+		PizzeriaUser user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		return new PizzeriaUserPrincipal(user);
+	}
 }

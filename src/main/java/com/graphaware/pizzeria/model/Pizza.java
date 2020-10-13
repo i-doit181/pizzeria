@@ -4,23 +4,23 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Data
 public class Pizza {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private long id;
 
-    private String name;
+	private String name;
 
-    @Convert(converter = ToppingConverter.class)
-    @Column(length = 10485760)
-    private List<String> toppings;
+	@Convert(converter = ToppingConverter.class)
+	@Column(length = 10485760)
+	private List<String> toppings;
 
-    @NotNull
-    private Double price;
+	@NotNull
+	private Double price;
 }

@@ -58,3 +58,13 @@ Authorization: Basic Y2hlZmY6cHdk
 PUT localhost:8080/purchase/completePurchase/6
 Content-Type: application/json
 Authorization: Basic Y2hlZmY6cHdk
+
+### access should be denied
+GET localhost:8080/purchase/currentPurchase
+Content-Type: application/json
+Authorization: Basic YWxjYXBvbmU6cHdk
+
+### access should be denied -- no owner in database
+GET localhost:8080/manage/statistic/purchases
+Content-Type: application/json
+Authorization: Basic Y2hlZmY6cHdk

@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ManagementController {
 
-    @Autowired
-    private ManagementService managementService;
+	@Autowired
+	private ManagementService managementService;
 
-    public ManagementController() { }
+	public ManagementController() {}
 
-    @GetMapping("/manage/statistic/purchases")
-    public long getPurchasesCount() {
-        return managementService.getPurchasesCount();
-    }
+	@GetMapping("/manage/statistic/purchases")
+	public long getPurchasesCount() {
+		return managementService.getPurchasesCount();
+	}
 }

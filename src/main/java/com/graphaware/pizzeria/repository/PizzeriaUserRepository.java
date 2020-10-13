@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PizzeriaUserRepository extends CrudRepository<PizzeriaUser, Long> {
 
-    PizzeriaUser findByUsername(String username);
+	PizzeriaUser findByUsername(String username);
 }

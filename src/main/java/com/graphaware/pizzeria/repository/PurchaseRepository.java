@@ -9,6 +9,8 @@ public interface PurchaseRepository extends CrudRepository<Purchase, Long> {
 
 	Purchase findFirstByStateEquals(PurchaseState state);
 
+	List<Purchase> findAllByStateEquals(PurchaseState state);
+
 	List<Purchase> findAllByStateEqualsAndCustomer_Id(PurchaseState state, Long customerId);
 
 }

@@ -11,30 +11,28 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class PizzeriaSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private PizzeriaUserDetailsService userDetailsService;
-    private BCryptPasswordEncoder encoder;
+	private PizzeriaUserDetailsService userDetailsService;
+	private BCryptPasswordEncoder encoder;
 
+	public PizzeriaSecurityConfiguration(PizzeriaUserDetailsService userDetailsService, BCryptPasswordEncoder encoder) {
+		this.userDetailsService = userDetailsService;
+		this.encoder = encoder;
+	}
 
-    public PizzeriaSecurityConfiguration(PizzeriaUserDetailsService userDetailsService, BCryptPasswordEncoder encoder) {
-        this.userDetailsService = userDetailsService;
-        this.encoder = encoder;
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		// super.configure(http);
+		http
+				.csrf().disable()
+				.authorizeRequests().anyRequest().authenticated()
+				.and()
+				.httpBasic();
+	}
 
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        //super.configure(http);
-        http
-         .csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .httpBasic();
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(encoder);
-    }
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth
+				.userDetailsService(userDetailsService)
+				.passwordEncoder(encoder);
+	}
 }

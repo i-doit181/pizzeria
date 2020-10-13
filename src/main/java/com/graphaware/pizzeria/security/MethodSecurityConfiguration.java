@@ -16,27 +16,27 @@ import java.io.StringWriter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
-    @Override
-    protected MethodSecurityExpressionHandler createExpressionHandler() {
-        DefaultMethodSecurityExpressionHandler expressionHandler = (DefaultMethodSecurityExpressionHandler) super.createExpressionHandler();
-        expressionHandler.setRoleHierarchy(getRoleHierarchy());
-        return expressionHandler;
-    }
+	@Override
+	protected MethodSecurityExpressionHandler createExpressionHandler() {
+		DefaultMethodSecurityExpressionHandler expressionHandler = (DefaultMethodSecurityExpressionHandler) super.createExpressionHandler();
+		expressionHandler.setRoleHierarchy(getRoleHierarchy());
+		return expressionHandler;
+	}
 
-    private RoleHierarchy getRoleHierarchy() {
-        StringWriter roleHierarchyDescriptionBuffer = new StringWriter();
-        PrintWriter roleHierarchyDescriptionWriter = new PrintWriter(roleHierarchyDescriptionBuffer);
+	private RoleHierarchy getRoleHierarchy() {
+		StringWriter roleHierarchyDescriptionBuffer = new StringWriter();
+		PrintWriter roleHierarchyDescriptionWriter = new PrintWriter(roleHierarchyDescriptionBuffer);
 
-        roleHierarchyDescriptionWriter.println(UserRole.OWNER.name() + " > " + "VIEW_STATISTICS");
-        roleHierarchyDescriptionWriter.println(UserRole.PIZZA_MAKER.name() + " > " + "PICK_PURCHASE");
-        roleHierarchyDescriptionWriter.println(UserRole.PIZZA_MAKER.name() + " > " + "COMPLETE_PURCHASE");
-        roleHierarchyDescriptionWriter.println(UserRole.CUSTOMER.name() + " > " + "ADD_PIZZA");
-        roleHierarchyDescriptionWriter.println(UserRole.CUSTOMER.name() + " > " + "VIEW_PURCHASE");
-        roleHierarchyDescriptionWriter.println(UserRole.CUSTOMER.name() + " > " + "CONFIRM_PURCHASE");
+		roleHierarchyDescriptionWriter.println(UserRole.OWNER.name() + " > " + "VIEW_STATISTICS");
+		roleHierarchyDescriptionWriter.println(UserRole.PIZZA_MAKER.name() + " > " + "PICK_PURCHASE");
+		roleHierarchyDescriptionWriter.println(UserRole.PIZZA_MAKER.name() + " > " + "COMPLETE_PURCHASE");
+		roleHierarchyDescriptionWriter.println(UserRole.CUSTOMER.name() + " > " + "ADD_PIZZA");
+		roleHierarchyDescriptionWriter.println(UserRole.CUSTOMER.name() + " > " + "VIEW_PURCHASE");
+		roleHierarchyDescriptionWriter.println(UserRole.CUSTOMER.name() + " > " + "CONFIRM_PURCHASE");
 
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy(roleHierarchyDescriptionBuffer.toString());
+		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+		roleHierarchy.setHierarchy(roleHierarchyDescriptionBuffer.toString());
 
-        return roleHierarchy;
-    }
+		return roleHierarchy;
+	}
 }

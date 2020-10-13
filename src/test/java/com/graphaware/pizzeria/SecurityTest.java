@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 @SpringBootTest
 public class SecurityTest {
 
-    @Test
-    public void onlyOwnerCanGetPurchasesCount() {
-        fail("Not yet implemented");
-    }
+	@Test
+	public void onlyOwnerCanGetPurchasesCount() {
+		fail("Not yet implemented");
+	}
 
 }
