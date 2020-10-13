@@ -44,7 +44,7 @@ POST localhost:8080/purchase/submitOrder
 Content-Type: application/json
 Authorization: Basic YWxjYXBvbmU6cHdk
 
-###
+###if no purchase are there to be picked, command will throw a NullPointerException!
 GET localhost:8080/purchase/pickPurchase
 Content-Type: application/json
 Authorization: Basic Y2hlZmY6cHdk
@@ -54,8 +54,14 @@ GET localhost:8080/purchase/currentPurchase
 Content-Type: application/json
 Authorization: Basic Y2hlZmY6cHdk
 
-###
+###after second run this will throw a NullPointerException!
 PUT localhost:8080/purchase/completePurchase/6
+Content-Type: application/json
+Authorization: Basic Y2hlZmY6cHdk
+
+
+###after second run this will throw a NullPointerException!
+PUT localhost:8080/purchase/completePurchase/7
 Content-Type: application/json
 Authorization: Basic Y2hlZmY6cHdk
 

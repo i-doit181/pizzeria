@@ -45,7 +45,7 @@ public class PurchaseServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		purchaseService = new PurchaseService(purchaseRepository, userRepository);
+		purchaseService = new PurchaseService(purchaseRepository);
 		currentUser = new PizzeriaUser();
 		currentUser.setName("Papa");
 		currentUser.setId(666L);
